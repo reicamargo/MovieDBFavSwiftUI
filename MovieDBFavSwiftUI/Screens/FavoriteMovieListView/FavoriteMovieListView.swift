@@ -9,7 +9,11 @@ import SwiftUI
 
 struct FavoriteMovieListView: View {
     var body: some View {
-        Text("Favorite list")
+        NavigationStack {
+            Text("Favorite list")
+                .navigationTitle("Favorites")
+                .navigationBarTitleDisplayMode(.inline)
+        }
     }
 }
 
