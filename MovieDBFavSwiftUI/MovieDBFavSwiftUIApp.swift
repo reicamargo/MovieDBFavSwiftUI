@@ -11,7 +11,7 @@ import SwiftUI
 struct MovieDBFavSwiftUIApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MovieDBTabView()
         }
     }
 }
