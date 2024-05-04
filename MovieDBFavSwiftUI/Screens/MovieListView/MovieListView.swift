@@ -17,9 +17,27 @@ struct MovieListView: View {
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 200)
-                TextField("Search by name", text: $movieListVC.movieSearch)
-                    .padding(.top, 20)
-                    .padding(.leading, 20)
+                HStack {
+                    TextField("Search by name", text: $movieListVC.movieSearch)
+                        .autocorrectionDisabled()
+                        .onChange(of: movieListVC.movieSearch) {
+                            if movieListVC.movieSearch.isEmpty {
+                                Task {
+                                    await movieListVC.loadPopularMovies()
+                                }
+                            }
+                        }
+                    Button {
+                        Task {
+                            await movieListVC.searchMoviesByTitle()
+                        }
+                    } label: {
+                        Label("Search", systemImage: "magnifyingglass")
+                            .tint(.mint)
+                    }
+                }
+                .padding(20)
+                
                 VStack {
                     ZStack {
                         List(movieListVC.movies) { movie in
@@ -30,6 +48,10 @@ struct MovieListView: View {
                         
                         if movieListVC.isLoading {
                             LoadingView()
+                        }
+                        
+                        if movieListVC.movies.count == 0 {
+                            EmptyStateView(title: "No movies found...", imageResource: .noMovieFound, description: "Are you sure you're typing in it right?")
                         }
                     }
                     .alert(movieListVC.alertItem.title,

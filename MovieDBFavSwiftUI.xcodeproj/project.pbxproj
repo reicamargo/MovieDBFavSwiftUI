@@ -20,8 +20,9 @@
 		3DFFB0992BE56D37008D71CC /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DFFB0982BE56D37008D71CC /* NetworkManager.swift */; };
 		3DFFB09B2BE5735A008D71CC /* MovieListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DFFB09A2BE5735A008D71CC /* MovieListViewController.swift */; };
 		3DFFB0A02BE57597008D71CC /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DFFB09F2BE57597008D71CC /* LoadingView.swift */; };
-		3DFFB0A42BE5764A008D71CC /* NoFavoriteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DFFB0A32BE5764A008D71CC /* NoFavoriteView.swift */; };
+		3DFFB0A42BE5764A008D71CC /* EmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DFFB0A32BE5764A008D71CC /* EmptyStateView.swift */; };
 		3DFFB0A62BE57CBE008D71CC /* AlertItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DFFB0A52BE57CBE008D71CC /* AlertItem.swift */; };
+		3DFFB0AB2BE65A9A008D71CC /* NoMoviesFound.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DFFB0AA2BE65A9A008D71CC /* NoMoviesFound.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,8 +40,9 @@
 		3DFFB0982BE56D37008D71CC /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		3DFFB09A2BE5735A008D71CC /* MovieListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListViewController.swift; sourceTree = "<group>"; };
 		3DFFB09F2BE57597008D71CC /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
-		3DFFB0A32BE5764A008D71CC /* NoFavoriteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoFavoriteView.swift; sourceTree = "<group>"; };
+		3DFFB0A32BE5764A008D71CC /* EmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateView.swift; sourceTree = "<group>"; };
 		3DFFB0A52BE57CBE008D71CC /* AlertItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertItem.swift; sourceTree = "<group>"; };
+		3DFFB0AA2BE65A9A008D71CC /* NoMoviesFound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoMoviesFound.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -183,7 +185,8 @@
 		3DFFB09D2BE5756F008D71CC /* EmptyStates */ = {
 			isa = PBXGroup;
 			children = (
-				3DFFB0A32BE5764A008D71CC /* NoFavoriteView.swift */,
+				3DFFB0A32BE5764A008D71CC /* EmptyStateView.swift */,
+				3DFFB0AA2BE65A9A008D71CC /* NoMoviesFound.swift */,
 			);
 			path = EmptyStates;
 			sourceTree = "<group>";
@@ -274,11 +277,12 @@
 				3DFFB08B2BE55222008D71CC /* FavoriteMovieListView.swift in Sources */,
 				3DFFB0772BE532B6008D71CC /* MovieDBTabView.swift in Sources */,
 				3DFFB0892BE551CF008D71CC /* MovieListView.swift in Sources */,
+				3DFFB0AB2BE65A9A008D71CC /* NoMoviesFound.swift in Sources */,
 				3DFFB0752BE532B6008D71CC /* MovieDBFavSwiftUIApp.swift in Sources */,
 				3DFFB0932BE55BCF008D71CC /* Date+Ext.swift in Sources */,
 				3DFFB0872BE54ED3008D71CC /* Movie.swift in Sources */,
 				3DFFB0A62BE57CBE008D71CC /* AlertItem.swift in Sources */,
-				3DFFB0A42BE5764A008D71CC /* NoFavoriteView.swift in Sources */,
+				3DFFB0A42BE5764A008D71CC /* EmptyStateView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

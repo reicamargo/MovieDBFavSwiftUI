@@ -11,14 +11,14 @@ struct Movie: Decodable, Identifiable, Hashable {
     let id: Int
     let title: String
     let overview: String
-    let posterPath: String
+    let posterPath: String?
     let voteAverage: Double
     let releaseDate: Date
     //var genres: [String]?
     
     func imageURL(posterSize size: PosterSize) -> URL? {
         let baseImageURL = "https://image.tmdb.org/t/p/"
-        let imageString = baseImageURL + size.rawValue + posterPath
+        let imageString = baseImageURL + size.rawValue + (posterPath ?? "")
         return URL(string: imageString)
     }
 }
