@@ -26,6 +26,7 @@
 		3DFFB0AE2BE661D9008D71CC /* LogoImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DFFB0AD2BE661D9008D71CC /* LogoImageView.swift */; };
 		3DFFB0B02BE665B8008D71CC /* MovieDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DFFB0AF2BE665B8008D71CC /* MovieDetailViewModel.swift */; };
 		3DFFB0B32BE66A88008D71CC /* PosterImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DFFB0B22BE66A88008D71CC /* PosterImageView.swift */; };
+		3DFFB0B52BE68401008D71CC /* Genre.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DFFB0B42BE68401008D71CC /* Genre.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,6 +50,7 @@
 		3DFFB0AD2BE661D9008D71CC /* LogoImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoImageView.swift; sourceTree = "<group>"; };
 		3DFFB0AF2BE665B8008D71CC /* MovieDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailViewModel.swift; sourceTree = "<group>"; };
 		3DFFB0B22BE66A88008D71CC /* PosterImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PosterImageView.swift; sourceTree = "<group>"; };
+		3DFFB0B42BE68401008D71CC /* Genre.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Genre.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,6 +129,7 @@
 			isa = PBXGroup;
 			children = (
 				3DFFB0862BE54ED3008D71CC /* Movie.swift */,
+				3DFFB0B42BE68401008D71CC /* Genre.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -303,6 +306,7 @@
 				3DFFB0772BE532B6008D71CC /* MovieDBTabView.swift in Sources */,
 				3DFFB0892BE551CF008D71CC /* MovieListView.swift in Sources */,
 				3DFFB0AB2BE65A9A008D71CC /* NoMoviesFound.swift in Sources */,
+				3DFFB0B52BE68401008D71CC /* Genre.swift in Sources */,
 				3DFFB0752BE532B6008D71CC /* MovieDBFavSwiftUIApp.swift in Sources */,
 				3DFFB0932BE55BCF008D71CC /* Date+Ext.swift in Sources */,
 				3DFFB0872BE54ED3008D71CC /* Movie.swift in Sources */,

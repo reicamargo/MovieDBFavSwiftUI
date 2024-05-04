@@ -14,6 +14,7 @@ struct MovieDetailView: View {
         ZStack {
             VStack {
                 PosterImageView(url: movieDetail.movie?.imageURL(posterSize: .original), width: 200)
+                    .padding(.top, 30)
                 Label(String(format: "%.2f / 10", movieDetail.movie?.voteAverage ?? 0.00), systemImage: "heart.fill")
                     .symbolRenderingMode(.multicolor)
                     .font(.body)
@@ -23,12 +24,13 @@ struct MovieDetailView: View {
                         .font(.body)
                         .foregroundStyle(.primary)
                         .padding(.bottom, 10)
-                    Text("Genres: a, b, c")
+                    Text("Genres: \(movieDetail.displayGenre())")
                         .font(.body)
                         .foregroundStyle(.primary)
                         .multilineTextAlignment(.leading)
                 }
                 .padding(20)
+                Spacer()
             }
             
             if movieDetail.movie == nil && !movieDetail.isLoading {
