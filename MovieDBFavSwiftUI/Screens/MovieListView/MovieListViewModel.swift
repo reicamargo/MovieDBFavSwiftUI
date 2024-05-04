@@ -8,7 +8,7 @@
 import SwiftUI
 
 @MainActor
-final class MovieListViewController: ObservableObject {
+final class MovieListViewModel: ObservableObject {
     @Published var movies: [Movie] = []
     @Published var movieSearch: String = ""
     @Published var alertItem = AlertItem()

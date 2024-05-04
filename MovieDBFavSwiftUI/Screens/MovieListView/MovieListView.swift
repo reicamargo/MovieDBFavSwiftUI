@@ -8,28 +8,30 @@
 import SwiftUI
 
 struct MovieListView: View {
-    @StateObject var movieListVC = MovieListViewController()
+    @StateObject var movieList = MovieListViewModel()
+    @FocusState private var moveSearchIsFocused: Bool
     
     var body: some View {
         NavigationStack {
             VStack {
-                Image(.themovieDBLogo)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 200)
+                LogoImageView()
                 HStack {
-                    TextField("Search by name", text: $movieListVC.movieSearch)
+                    TextField("Search by name", text: $movieList.movieSearch)
                         .autocorrectionDisabled()
-                        .onChange(of: movieListVC.movieSearch) {
-                            if movieListVC.movieSearch.isEmpty {
+                        .keyboardType(.default)
+                        .focused($moveSearchIsFocused)
+                        .onChange(of: movieList.movieSearch) {
+                            if movieList.movieSearch.isEmpty {
+                                moveSearchIsFocused = false
                                 Task {
-                                    await movieListVC.loadPopularMovies()
+                                    await movieList.loadPopularMovies()
                                 }
                             }
                         }
                     Button {
+                        moveSearchIsFocused = false
                         Task {
-                            await movieListVC.searchMoviesByTitle()
+                            await movieList.searchMoviesByTitle()
                         }
                     } label: {
                         Label("Search", systemImage: "magnifyingglass")
@@ -40,30 +42,40 @@ struct MovieListView: View {
                 
                 VStack {
                     ZStack {
-                        List(movieListVC.movies) { movie in
-                            MovieListViewCell(movie: movie)
-                                .listRowSeparator(.visible)
+                        List(movieList.movies) { movie in
+                            NavigationLink(value: movie) {
+                                MovieListViewCell(movie: movie)
+                                    .listRowSeparator(.visible)
+                            }
                         }
                         .listStyle(.inset)
+                        .navigationDestination(for: Movie.self) { movie in
+                            // TODO: change for just passing a var movie.id or let it this way passing a VC?
+                            MovieDetailView(movieDetail: MovieDetailViewModel(selectedMovieID: movie.id))
+                        }
                         
-                        if movieListVC.isLoading {
+                        if movieList.movies.count == 0 && !movieList.isLoading {
+                            EmptyStateView(title: "No movies found...", imageResource: .noMovieFound, description: "Are you sure you're typing in it right?")
+                        }
+                        
+                        if movieList.isLoading {
                             LoadingView()
                         }
                         
-                        if movieListVC.movies.count == 0 {
-                            EmptyStateView(title: "No movies found...", imageResource: .noMovieFound, description: "Are you sure you're typing in it right?")
-                        }
+                        
                     }
-                    .alert(movieListVC.alertItem.title,
-                           isPresented: $movieListVC.alertItem.showAlert,
-                           presenting: movieListVC.alertItem,
+                    .alert(movieList.alertItem.title,
+                           isPresented: $movieList.alertItem.showAlert,
+                           presenting: movieList.alertItem,
                            actions: { alertItem in Button("OK", role: .cancel) { } },
                            message: { alertItem in alertItem.message })
                 }
                 Spacer()
             }
             .task {
-                await movieListVC.loadPopularMovies()
+                if movieList.movies.count == 0 {
+                    await movieList.loadPopularMovies()
+                }
             }
             .navigationTitle("Movies")
             .navigationBarTitleDisplayMode(.inline)

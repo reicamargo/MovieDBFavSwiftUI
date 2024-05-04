@@ -8,11 +8,49 @@
 import SwiftUI
 
 struct MovieDetailView: View {
+    @ObservedObject var movieDetail: MovieDetailViewModel
+    
     var body: some View {
-        Text("Movie Detail view")
+        ZStack {
+            VStack {
+                PosterImageView(url: movieDetail.movie?.imageURL(posterSize: .original), width: 200)
+                Label(String(format: "%.2f / 10", movieDetail.movie?.voteAverage ?? 0.00), systemImage: "heart.fill")
+                    .symbolRenderingMode(.multicolor)
+                    .font(.body)
+                    .foregroundStyle(.primary)
+                VStack(alignment: .leading) {
+                    Text("\(movieDetail.movie?.overview ?? "")")
+                        .font(.body)
+                        .foregroundStyle(.primary)
+                        .padding(.bottom, 10)
+                    Text("Genres: a, b, c")
+                        .font(.body)
+                        .foregroundStyle(.primary)
+                        .multilineTextAlignment(.leading)
+                }
+                .padding(20)
+            }
+            
+            if movieDetail.movie == nil && !movieDetail.isLoading {
+                EmptyStateView(title: "No movie found...", imageResource: .noMovieFound, description: "Something is really wrong 😫")
+            }
+            
+            if movieDetail.isLoading {
+                LoadingView()
+            }
+        }
+        .task {
+            await movieDetail.getMovie()
+        }
+        .navigationTitle("\(movieDetail.movie?.title ?? "")")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
 #Preview {
-    MovieDetailView()
+    MovieDetailView(movieDetail: MovieDetailViewModel(selectedMovieID: 693134))
 }
+
+
+//godzilla -> 823464
+//dune -> 693134

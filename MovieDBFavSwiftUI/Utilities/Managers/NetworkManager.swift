@@ -57,6 +57,23 @@ final class NetworkManager {
             
         }
     }
+    
+    func getMovieBy(id movieId: Int) async throws -> Movie {
+        let stringURL = "\(baseURL)movie/\(movieId)?language=en-US&api_key=\(apiKey)"
+        
+        guard let url = URL(string: stringURL) else {
+            throw NetworkError.invalidParameterSearch
+        }
+        
+        let (data, _) = try await URLSession.shared.data(from: url)
+        
+        do {
+            return try decoder.decode(Movie.self, from: data)
+        } catch {
+            throw NetworkError.invalidData
+            
+        }
+    }
 }
 
 enum NetworkError: String, Error {

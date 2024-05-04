@@ -12,17 +12,7 @@ struct MovieListViewCell: View {
     
     var body: some View {
         HStack {
-            AsyncImage(url: movie.imageURL(posterSize: .w92)) { image in
-                image
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 80)
-            } placeholder: {
-                Image(.moviePlaceholder)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 80)
-            }
+            PosterImageView(url: movie.imageURL(posterSize: .w92), width: 80)
             .padding(10)
             VStack(alignment: .leading) {
                 Text(movie.title)
