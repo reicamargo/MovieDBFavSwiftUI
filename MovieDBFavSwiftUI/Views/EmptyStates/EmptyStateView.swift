@@ -20,7 +20,7 @@ struct EmptyStateView: View {
                 .frame(width: 200, height: 200)
             Text(title)
                 .font(.title2)
-                .foregroundStyle(.mint)
+                .foregroundStyle(.accent)
                 .padding()
             Text(description)
                 .foregroundStyle(.primary)

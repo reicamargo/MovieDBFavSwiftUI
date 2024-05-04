@@ -30,7 +30,12 @@ struct MovieDetailView: View {
                         .multilineTextAlignment(.leading)
                 }
                 .padding(20)
-                Spacer()
+                Button {
+                    movieDetail.isFavorite.toggle()
+                } label: {
+                    FavoriteButton(favorite: movieDetail.isFavorite)
+                }
+                
             }
             
             if movieDetail.movie == nil && !movieDetail.isLoading {
@@ -41,6 +46,11 @@ struct MovieDetailView: View {
                 LoadingView()
             }
         }
+        .alert(movieDetail.alertItem.title,
+               isPresented: $movieDetail.alertItem.showAlert,
+               presenting: movieDetail.alertItem,
+               actions: { alertItem in Button("OK", role: .cancel) { } },
+               message: { alertItem in alertItem.message })
         .task {
             await movieDetail.getMovie()
         }

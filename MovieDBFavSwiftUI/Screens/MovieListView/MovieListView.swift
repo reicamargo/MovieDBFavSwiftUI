@@ -35,27 +35,27 @@ struct MovieListView: View {
                         }
                     } label: {
                         Label("Search", systemImage: "magnifyingglass")
-                            .tint(.mint)
+                            .tint(.accent)
                     }
                 }
                 .padding(20)
                 
                 VStack {
                     ZStack {
+                        if movieList.movies.count == 0 && !movieList.isLoading {
+                            EmptyStateView(title: "No movies found...", imageResource: .noMovieFound, description: "Are you sure you're typing in it right?")
+                        }
+                        
                         List(movieList.movies) { movie in
-                            NavigationLink(value: movie) {
+                            NavigationLink(value: movie.id) {
                                 MovieListViewCell(movie: movie)
                                     .listRowSeparator(.visible)
                             }
                         }
                         .listStyle(.inset)
-                        .navigationDestination(for: Movie.self) { movie in
+                        .navigationDestination(for: Int.self) { movieId in
                             // TODO: change for just passing a var movie.id or let it this way passing a VC?
-                            MovieDetailView(movieDetail: MovieDetailViewModel(selectedMovieID: movie.id))
-                        }
-                        
-                        if movieList.movies.count == 0 && !movieList.isLoading {
-                            EmptyStateView(title: "No movies found...", imageResource: .noMovieFound, description: "Are you sure you're typing in it right?")
+                            MovieDetailView(movieDetail: MovieDetailViewModel(selectedMovieID: movieId))
                         }
                         
                         if movieList.isLoading {

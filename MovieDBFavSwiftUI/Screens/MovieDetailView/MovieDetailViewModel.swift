@@ -13,6 +13,31 @@ final class MovieDetailViewModel: ObservableObject {
     @Published var movie: Movie?
     @Published var alertItem = AlertItem()
     @Published var isLoading: Bool = true
+    var isFavorite: Bool {
+        get {
+            PersistenceManager.shared.isMovieFavorite(moveId: self.selectedMovieID)
+        }
+        set {
+            isLoading = true
+            guard let movie = self.movie else { return }
+            
+            do {
+                if newValue {
+                    try PersistenceManager.shared.update(with: movie, actionType: .add)
+                } else {
+                    try PersistenceManager.shared.update(with: movie, actionType: .remove)
+                }
+                isLoading = false
+            } catch {
+                isLoading = false
+                if let persintenceError = error as? PersistenceError {
+                    alertItem.set(title: "Something's went wrong", message: persintenceError.rawValue)
+                } else {
+                    alertItem.set(title: "Something's went wrong", message: "Unable to get favorites. Please try again later.")
+                }
+            }
+        }
+    }
     
     init(selectedMovieID: Int) {
         self.selectedMovieID = selectedMovieID
@@ -45,5 +70,4 @@ final class MovieDetailViewModel: ObservableObject {
         genresString.removeLast(2)
         return genresString
     }
-    
 }

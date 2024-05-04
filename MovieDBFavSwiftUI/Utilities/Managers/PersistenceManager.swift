@@ -23,11 +23,21 @@ final class PersistenceManager {
         }
     }
     
-    func save(favorites: [Movie]) throws {
+    func isMovieFavorite(moveId: Int) -> Bool {
+        do {
+            let favorites = try loadFavorites()
+            return favorites.contains { $0.id == moveId }
+        } catch {
+            return false
+        }
+    }
+    
+    private func save(favorites: [Movie]) throws {
         do {
             let encoder = JSONEncoder()
-            let favoritesEncoded = try encoder.encode(favorites)
-            UserDefaults.standard.set(favoritesEncoded, forKey: Keys.favorites)
+            let encodedFavorites = try encoder.encode(favorites)
+            UserDefaults.standard.set(encodedFavorites, forKey: Keys.favorites)
+            return
         } catch {
             throw PersistenceError.unableToSave
         }

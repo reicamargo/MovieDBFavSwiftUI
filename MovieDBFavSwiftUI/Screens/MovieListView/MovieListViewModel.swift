@@ -14,7 +14,6 @@ final class MovieListViewModel: ObservableObject {
     @Published var alertItem = AlertItem()
     @Published var isLoading: Bool = true
     
-    
     func loadPopularMovies() async {
         isLoading = true
         do {
