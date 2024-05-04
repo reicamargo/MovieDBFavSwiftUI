@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Movie: Decodable, Identifiable, Hashable {
+struct Movie: Codable, Identifiable, Hashable {
     let id: Int
     let title: String
     let overview: String
@@ -15,6 +15,7 @@ struct Movie: Decodable, Identifiable, Hashable {
     let voteAverage: Double
     let releaseDate: Date
     var genres: [Genre]?
+    var isMyFavorite: Bool = false
     
     func imageURL(posterSize size: PosterSize) -> URL? {
         let baseImageURL = "https://image.tmdb.org/t/p/"
