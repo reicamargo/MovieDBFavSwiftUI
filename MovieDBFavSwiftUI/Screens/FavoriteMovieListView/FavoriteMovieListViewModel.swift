@@ -19,28 +19,12 @@ final class FavoriteMovieListViewModel: ObservableObject {
             if favoriteSearch.isEmpty {
                 filteredFavorites = favorites
             } else {
-                switch filter {
-                case .byTitle:
-                    filteredFavorites = favorites.filter { $0.title.localizedCaseInsensitiveContains(favoriteSearch) }
-                case .byReleaseYear:
-                    guard let searchYear = Int(favoriteSearch) else { return }
-                    
-                    if searchYear > 1000 {
-                        filteredFavorites = favorites.filter {
-                            let calendar = Calendar.current
-                            return calendar.component(.year, from: $0.releaseDate) == searchYear
-                        }
-                    } else {
-                        filteredFavorites = favorites
-                    }
-                case .byMostPopular:
-                    filteredFavorites = favorites.sorted { $0.voteAverage > $1.voteAverage }
-                }
+                filterFavorites()
             }
         }
     }
     
-    var favorites: [Movie] = [] {
+    private var favorites: [Movie] = [] {
         didSet {
             self.filteredFavorites = favorites
         }
@@ -58,6 +42,26 @@ final class FavoriteMovieListViewModel: ObservableObject {
             } else {
                 alertItem.set(title: "Something's went wrong", message: "Unable to get favorites. Please try again later.")
             }
+        }
+    }
+    
+    private func filterFavorites() {
+        switch filter {
+        case .byTitle:
+            filteredFavorites = favorites.filter { $0.title.localizedCaseInsensitiveContains(favoriteSearch) }
+        case .byReleaseYear:
+            guard let searchYear = Int(favoriteSearch) else { return }
+            
+            if searchYear > 1000 {
+                filteredFavorites = favorites.filter {
+                    let calendar = Calendar.current
+                    return calendar.component(.year, from: $0.releaseDate) == searchYear
+                }
+            } else {
+                filteredFavorites = favorites
+            }
+        case .byMostPopular:
+            filteredFavorites = favorites.sorted { $0.voteAverage > $1.voteAverage }
         }
     }
 }

@@ -24,10 +24,10 @@ final class NetworkManager {
         })
     }
     
-    func getMovieBy(_ searchBy: SearchFilter, term: String? = nil, page: Int)  async throws -> [Movie] {
+    func getMovieBy(_ filter: SearchFilter, term: String? = nil, page: Int)  async throws -> [Movie] {
         var stringURL = ""
         
-        switch searchBy {
+        switch filter {
         case .byTitle:
             guard let term else { throw NetworkError.invalidParameterSearch }
             

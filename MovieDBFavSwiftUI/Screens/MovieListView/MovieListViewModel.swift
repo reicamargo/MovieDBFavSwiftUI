@@ -14,7 +14,7 @@ final class MovieListViewModel: ObservableObject {
     @Published var isLoading: Bool = true
     @Published var filter: SearchFilter = .byMostPopular
     
-    var mostPopularMovies: [Movie] = [] {
+    private var mostPopularMovies: [Movie] = [] {
         didSet {
             self.searchedMovies = mostPopularMovies
         }
@@ -28,22 +28,22 @@ final class MovieListViewModel: ObservableObject {
             }
             else if movieSearch.count > 3 && filter != .byMostPopular {
                 Task {
-                    await loadMoviesBy(filter)
+                    await loadMovies()
                 }
             }
         }
     }
     
-    func loadMoviesBy(_ searchBy: SearchFilter) async {
+    func loadMovies() async {
         isLoading = true
         
         do {
-            switch searchBy {
+            switch filter {
             case .byTitle:
-                searchedMovies = try await NetworkManager.shared.getMovieBy(searchBy, term: movieSearch, page: 1)
+                searchedMovies = try await NetworkManager.shared.getMovieBy(filter, term: movieSearch, page: 1)
             
             case .byMostPopular:
-                mostPopularMovies = try await NetworkManager.shared.getMovieBy(searchBy, page: 1)
+                mostPopularMovies = try await NetworkManager.shared.getMovieBy(filter, page: 1)
             
             case .byReleaseYear:
                 guard let year = Int(movieSearch), year > 1000 else {
@@ -64,61 +64,6 @@ final class MovieListViewModel: ObservableObject {
             } else {
                 alertItem.set(title: "Something's went wrong", message: "Unable to connect to the server. Please try again later.")
             }
-        }
-        
+        }        
     }
-    
-//    func loadPopularMovies() async {
-//        isLoading = true
-//        
-//        do {
-//            mostPopularMovies = try await NetworkManager.shared.getMovieBy(.byMostPopular, page: 1)
-//            isLoading = false
-//            
-//        } catch {
-//            isLoading = false
-//            
-//            if let networkError = error as? NetworkError {
-//                alertItem.set(title: "Something's went wrong", message: networkError.rawValue)
-//            } else {
-//                alertItem.set(title: "Something's went wrong", message: "Unable to connect to the server. Please try again later.")
-//            }
-//        }
-//    }
-//    
-//    private func searchMoviesByTitle() async {
-//        isLoading = true
-//        
-//        do {
-//            searchedMovies = try await NetworkManager.shared.getMovieBy(.byTitle, term: movieSearch, page: 1)
-//            isLoading = false
-//            
-//        } catch {
-//            isLoading = false
-//            
-//            if let networkError = error as? NetworkError {
-//                alertItem.set(title: "Something's went wrong", message: networkError.rawValue)
-//            } else {
-//                alertItem.set(title: "Something's went wrong", message: "Unable to connect to the server. Please try again later.")
-//            }
-//        }
-//    }
-//    
-//    private func searchMoviesByReleaseYear(_ releaseYear: String) async {
-//        isLoading = true
-//        
-//        do {
-//            searchedMovies = try await NetworkManager.shared.getMovieBy(.byReleaseYear, term: releaseYear, page: 1)
-//            isLoading = false
-//            
-//        } catch {
-//            isLoading = false
-//            
-//            if let networkError = error as? NetworkError {
-//                alertItem.set(title: "Something's went wrong", message: networkError.rawValue)
-//            } else {
-//                alertItem.set(title: "Something's went wrong", message: "Unable to connect to the server. Please try again later.")
-//            }
-//        }
-//    }
 }
