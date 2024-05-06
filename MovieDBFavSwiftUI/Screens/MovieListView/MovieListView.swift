@@ -22,16 +22,28 @@ struct MovieListView: View {
                             EmptyStateView(title: "No movies found...", imageResource: .noMovieFound, description: "Are you sure you're typing in it right?")
                         }
                         
-                        List(movieList.searchedMovies) { movie in
-                            NavigationLink(value: movie.id) {
-                                MovieListViewCell(movie: movie)
-                                    .listRowSeparator(.visible)
+                        ScrollViewReader { proxy in
+                            
+                            List {
+                                ForEach(movieList.searchedMovies) { movie in
+                                    NavigationLink(value: movie.id) {
+                                        MovieListViewCell(movie: movie)
+                                            .listRowSeparator(.visible)
+                                            
+                                    }
+                                    .id(movie.id)
+                                }
                             }
-                        }
-                        .listStyle(.inset)
-                        .navigationDestination(for: Int.self) { movieId in
-                            // TODO: change for just passing a var movie.id or let it this way passing a View Model?
-                            MovieDetailView(movieDetail: MovieDetailViewModel(selectedMovieID: movieId))
+                            .onChange(of: movieList.filter) {
+                                withAnimation(.spring()) {
+                                    proxy.scrollTo(movieList.searchedMovies.first?.id, anchor: .center)
+                                }
+                            }
+                            .listStyle(.inset)
+                            .navigationDestination(for: Int.self) { movieId in
+                                // TODO: change for just passing a var movie.id or let it this way passing a View Model?
+                                MovieDetailView(movieDetail: MovieDetailViewModel(selectedMovieID: movieId))
+                            }
                         }
                         
                         if movieList.isLoading {
