@@ -11,7 +11,7 @@ struct FavoriteButton: View {
     var favorite: Bool
     
     var body: some View {
-        Label(favorite ? "Favorite" : "Not favorite", systemImage: favorite ? "star.fill" : "star")
+        Label(favorite ? "Unfavorite" : "Favorite", systemImage: favorite ? "star" : "star.fill")
             .symbolRenderingMode(.multicolor)
             .foregroundColor(.accentColor)
     }
