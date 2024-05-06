@@ -30,7 +30,7 @@ struct MovieListView: View {
                         }
                         .listStyle(.inset)
                         .navigationDestination(for: Int.self) { movieId in
-                            // TODO: change for just passing a var movie.id or let it this way passing a VC?
+                            // TODO: change for just passing a var movie.id or let it this way passing a View Model?
                             MovieDetailView(movieDetail: MovieDetailViewModel(selectedMovieID: movieId))
                         }
                         
