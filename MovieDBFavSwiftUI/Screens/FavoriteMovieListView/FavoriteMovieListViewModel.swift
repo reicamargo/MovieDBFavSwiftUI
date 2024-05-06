@@ -17,7 +17,7 @@ final class FavoriteMovieListViewModel: ObservableObject {
     var favoriteSearch = "" {
         didSet {
             if favoriteSearch.isEmpty {
-                filteredFavorites = favorites
+                loadFavorites()
             } else {
                 filterFavorites()
             }
@@ -33,10 +33,32 @@ final class FavoriteMovieListViewModel: ObservableObject {
     func loadFavorites() {
         do {
             isLoading = true
+            
             self.favorites = try PersistenceManager.shared.loadFavorites()
+            
             isLoading = false
+            
         } catch {
             isLoading = false
+            
+            if let persintenceError = error as? PersistenceError {
+                alertItem.set(title: "Something's went wrong", message: persintenceError.rawValue)
+            } else {
+                alertItem.set(title: "Something's went wrong", message: "Unable to get favorites. Please try again later.")
+            }
+        }
+    }
+    
+    func remove(attOffsets indexOffset: IndexSet) {
+        guard let index = indexOffset.first else { return }
+        let movie = filteredFavorites[index]
+
+        do {
+            try PersistenceManager.shared.update(with: movie, actionType: .remove)
+            filteredFavorites.remove(atOffsets: indexOffset)
+            
+        } catch {
+            
             if let persintenceError = error as? PersistenceError {
                 alertItem.set(title: "Something's went wrong", message: persintenceError.rawValue)
             } else {
@@ -49,6 +71,7 @@ final class FavoriteMovieListViewModel: ObservableObject {
         switch filter {
         case .byTitle:
             filteredFavorites = favorites.filter { $0.title.localizedCaseInsensitiveContains(favoriteSearch) }
+        
         case .byReleaseYear:
             guard let searchYear = Int(favoriteSearch) else { return }
             
@@ -60,6 +83,7 @@ final class FavoriteMovieListViewModel: ObservableObject {
             } else {
                 filteredFavorites = favorites
             }
+        
         case .byMostPopular:
             filteredFavorites = favorites.sorted { $0.voteAverage > $1.voteAverage }
         }

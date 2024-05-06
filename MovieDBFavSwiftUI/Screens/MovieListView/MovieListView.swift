@@ -50,7 +50,7 @@ struct MovieListView: View {
             }
             .task {
                 if movieList.searchedMovies.count == 0 {
-                    await movieList.loadMoviesBy(movieList.filter)
+                    await movieList.loadMovies()
                 }
             }
             .navigationTitle("Movies")

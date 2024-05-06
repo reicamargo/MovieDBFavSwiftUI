@@ -21,10 +21,17 @@ struct FavoriteMovieListView: View {
                         EmptyStateView(title: "No favorites yet...", imageResource: .noFavMovies, description: "Go to Movies tab and add movies to your favs!")
                     }
                     
-                    List(favoriteMovieList.filteredFavorites) { favorite in
-                        NavigationLink(value: favorite.id) {
-                            MovieListViewCell(movie: favorite)
-                                .listRowSeparator(.visible)
+                    List {
+                        ForEach(favoriteMovieList.filteredFavorites) { favorite in
+                            NavigationLink(value: favorite.id) {
+                                MovieListViewCell(movie: favorite)
+                                    .listRowSeparator(.visible)
+                            }
+                        }
+                        .onDelete { indexSet in
+                            withAnimation {
+                                favoriteMovieList.remove(attOffsets: indexSet)
+                            }
                         }
                     }
                     .listStyle(.inset)
