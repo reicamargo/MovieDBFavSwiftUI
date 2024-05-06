@@ -15,7 +15,6 @@ struct Movie: Codable, Identifiable, Hashable {
     let voteAverage: Double
     let releaseDate: Date
     var genres: [Genre]?
-    //var isMyFavorite: Bool?
     
     func imageURL(posterSize size: PosterSize) -> URL? {
         let baseImageURL = "https://image.tmdb.org/t/p/"
@@ -29,10 +28,6 @@ struct MovieDBResponse: Decodable {
     let results: [Movie]
     let totalPages: Int
     let totalResults: Int
-}
-
-enum PosterSize: String {
-    case w92, w154, w185, w342, original
 }
 
 struct MockMovie {

@@ -24,25 +24,23 @@ final class NetworkManager {
         })
     }
     
-    func getPopularMovies(page: Int) async throws -> [Movie] {
-        let stringURL = "\(baseURL)discover/movie?include_adult=false&language=en-US&page=\(String(page))&api_key=\(apiKey)&sort_by=popularity.desc"
+    func getMovieBy(_ searchBy: SearchFilter, term: String? = nil, page: Int)  async throws -> [Movie] {
+        var stringURL = ""
         
-        guard let url = URL(string: stringURL) else {
-            throw NetworkError.invalidParameterSearch
-        }
-        
-        let (data, _) = try await URLSession.shared.data(from: url)
-        
-        do {
-            return try decoder.decode(MovieDBResponse.self, from: data).results
-        } catch {
-            throw NetworkError.invalidData
+        switch searchBy {
+        case .byTitle:
+            guard let term else { throw NetworkError.invalidParameterSearch }
             
+            stringURL = "\(baseURL)search/movie?query=\(term)&include_adult=false&language=en-US&page=\(String(page))&sort_by=popularity.desc&api_key=\(apiKey)"
+            
+        case .byMostPopular:
+            stringURL = "\(baseURL)discover/movie?include_adult=false&language=en-US&page=\(String(page))&sort_by=popularity.desc&api_key=\(apiKey)"
+            
+        case .byReleaseYear:
+            guard let term else { throw NetworkError.invalidParameterSearch }
+            
+            stringURL = "\(baseURL)discover/movie?include_adult=false&include_video=false&language=en-US&page=\(String(page))&primary_release_year=\(term)&sort_by=primary_release_date.desc&api_key=\(apiKey)"
         }
-    }
-    
-    func getMoviesByTitle(_ title: String, page: Int) async throws -> [Movie] {
-        let stringURL = "\(baseURL)search/movie?query=\(title)&include_adult=false&language=en-US&page=\(String(page))&api_key=\(apiKey)&sort_by=popularity.desc"
         
         guard let url = URL(string: stringURL) else {
             throw NetworkError.invalidURL
@@ -52,13 +50,15 @@ final class NetworkManager {
         
         do {
             return try decoder.decode(MovieDBResponse.self, from: data).results
+            
         } catch {
             throw NetworkError.invalidData
             
         }
+        
     }
     
-    func getMovieBy(id movieId: Int) async throws -> Movie {
+    func getMovieDetail(movieId: Int) async throws -> Movie {
         let stringURL = "\(baseURL)movie/\(movieId)?language=en-US&api_key=\(apiKey)"
         
         guard let url = URL(string: stringURL) else {
@@ -69,16 +69,10 @@ final class NetworkManager {
         
         do {
             return try decoder.decode(Movie.self, from: data)
+            
         } catch {
             throw NetworkError.invalidData
             
         }
     }
-}
-
-enum NetworkError: String, Error {
-    case invalidURL = "Invalid URL. Something's wrong with the URL passed..."
-    case invalidData = "Invalid Data. Couldn't convert data"
-    case invalidResponse = "Invalid Response"
-    case invalidParameterSearch = "It was not possible to search movies with this parameter. Please try again..."
 }

@@ -9,17 +9,19 @@ import SwiftUI
 
 struct FavoriteMovieListView: View {
     @StateObject var favoriteMovieList = FavoriteMovieListViewModel()
+    //@FocusState private var moveSearchIsFocused: Bool
     
     var body: some View {
         NavigationStack {
-            LogoImageView()
+            
+            SearchView(textSearch: $favoriteMovieList.favoriteSearch, filter: $favoriteMovieList.filter)            
             ZStack {
                 VStack {
-                    if favoriteMovieList.favorites.count == 0 && !favoriteMovieList.isLoading {
+                    if favoriteMovieList.filteredFavorites.count == 0 && !favoriteMovieList.isLoading {
                         EmptyStateView(title: "No favorites yet...", imageResource: .noFavMovies, description: "Go to Movies tab and add movies to your favs!")
                     }
                     
-                    List(favoriteMovieList.favorites) { favorite in
+                    List(favoriteMovieList.filteredFavorites) { favorite in
                         NavigationLink(value: favorite.id) {
                             MovieListViewCell(movie: favorite)
                                 .listRowSeparator(.visible)
@@ -27,7 +29,7 @@ struct FavoriteMovieListView: View {
                     }
                     .listStyle(.inset)
                     .navigationDestination(for: Int.self) { favoriteId in
-                        // TODO: change for just passing a var movie.id or let it this way passing a VC?
+                        // TODO: change for just passing a var id or let it this way passing a VC?
                         MovieDetailView(movieDetail: MovieDetailViewModel(selectedMovieID: favoriteId))
                     }
                     
@@ -44,7 +46,7 @@ struct FavoriteMovieListView: View {
                        actions: { alertItem in Button("OK", role: .cancel) { } },
                        message: { alertItem in alertItem.message })
             }
-            .navigationTitle("Favorites")
+            .navigationTitle("My Favorites")
             .navigationBarTitleDisplayMode(.inline)
         }
     }

@@ -9,44 +9,20 @@ import SwiftUI
 
 struct MovieListView: View {
     @StateObject var movieList = MovieListViewModel()
-    @FocusState private var moveSearchIsFocused: Bool
     
     var body: some View {
         NavigationStack {
             VStack {
                 LogoImageView()
-                HStack {
-                    TextField("Search by name", text: $movieList.movieSearch)
-                        .autocorrectionDisabled()
-                        .keyboardType(.default)
-                        .focused($moveSearchIsFocused)
-                        .onChange(of: movieList.movieSearch) {
-                            if movieList.movieSearch.isEmpty {
-                                moveSearchIsFocused = false
-                                Task {
-                                    await movieList.loadPopularMovies()
-                                }
-                            }
-                        }
-                    Button {
-                        moveSearchIsFocused = false
-                        Task {
-                            await movieList.searchMoviesByTitle()
-                        }
-                    } label: {
-                        Label("Search", systemImage: "magnifyingglass")
-                            .tint(.accent)
-                    }
-                }
-                .padding(20)
+                SearchView(textSearch: $movieList.movieSearch, filter: $movieList.filter)
                 
                 VStack {
                     ZStack {
-                        if movieList.movies.count == 0 && !movieList.isLoading {
+                        if movieList.searchedMovies.count == 0 && !movieList.isLoading {
                             EmptyStateView(title: "No movies found...", imageResource: .noMovieFound, description: "Are you sure you're typing in it right?")
                         }
                         
-                        List(movieList.movies) { movie in
+                        List(movieList.searchedMovies) { movie in
                             NavigationLink(value: movie.id) {
                                 MovieListViewCell(movie: movie)
                                     .listRowSeparator(.visible)
@@ -73,8 +49,8 @@ struct MovieListView: View {
                 Spacer()
             }
             .task {
-                if movieList.movies.count == 0 {
-                    await movieList.loadPopularMovies()
+                if movieList.searchedMovies.count == 0 {
+                    await movieList.loadMoviesBy(movieList.filter)
                 }
             }
             .navigationTitle("Movies")

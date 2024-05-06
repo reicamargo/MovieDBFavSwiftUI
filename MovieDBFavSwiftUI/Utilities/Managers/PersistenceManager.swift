@@ -60,18 +60,8 @@ final class PersistenceManager {
     }
 }
 
-enum PersistenceActionType {
-    case add, remove
-}
-
 final class Keys {
     static let favorites = "myFavorites"
     
     private init() {}
-}
-
-enum PersistenceError: String, Error {
-    case invalidFavoriteData = "Unable to load you favorites. Try again later."
-    case unableToSave = "Unable to save to favorites..."
-    case indexNotFound = "Movie wasn't found in favorites"
 }

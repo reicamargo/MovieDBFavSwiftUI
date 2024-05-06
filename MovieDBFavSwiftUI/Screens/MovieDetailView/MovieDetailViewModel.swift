@@ -45,11 +45,15 @@ final class MovieDetailViewModel: ObservableObject {
     
     func getMovie() async {
         isLoading = true
+        
         do {
-            self.movie = try await NetworkManager.shared.getMovieBy(id: self.selectedMovieID)
+            self.movie = try await NetworkManager.shared.getMovieDetail(movieId: selectedMovieID)
+            
             isLoading = false
+            
         } catch {
             isLoading = false
+            
             if let networkError = error as? NetworkError {
                 alertItem.set(title: "Something's went wrong", message: networkError.rawValue)
             } else {
@@ -59,15 +63,17 @@ final class MovieDetailViewModel: ObservableObject {
     }
     
     func displayGenre() -> String {
-        guard let movie = self.movie else { return "No genres" }
-        guard let genres = movie.genres else { return "No genres" }
+        guard let movie = self.movie else { return "Not provided" }
+        guard let genres = movie.genres, genres.count > 0 else { return "Not provided" }
         
         var genresString = ""
         
         for genre in genres {
             genresString += "\(genre.name), "
         }
+        
         genresString.removeLast(2)
+        
         return genresString
     }
 }
