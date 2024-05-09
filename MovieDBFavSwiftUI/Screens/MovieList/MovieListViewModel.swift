@@ -25,7 +25,7 @@ final class MovieListViewModel: ObservableObject {
                     await loadMovies(filter: .byMostPopular)
                 }
             }
-            else if movieSearch.count > 3 && filter != .byMostPopular {
+            else if movieSearch.count > 2 && filter != .byMostPopular {
                 self.searchedMovies.removeAll()
                 Task {
                     await loadMovies(filter: filter)
