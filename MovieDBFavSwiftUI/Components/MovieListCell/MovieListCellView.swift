@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct MovieListViewCell: View {
+struct MovieListCellView: View {
     var movie: Movie
     
     var body: some View {
@@ -30,5 +30,5 @@ struct MovieListViewCell: View {
 }
 
 #Preview {
-    MovieListViewCell(movie: MockMovie.movieTwo)
+    MovieListCellView(movie: MockMovie.movieTwo)
 }

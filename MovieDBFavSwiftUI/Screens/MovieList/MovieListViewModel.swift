@@ -13,37 +13,38 @@ final class MovieListViewModel: ObservableObject {
     @Published var alertItem = AlertItem()
     @Published var isLoading: Bool = true
     @Published var filter: SearchFilter = .byMostPopular
-    
-    private var mostPopularMovies: [Movie] = [] {
-        didSet {
-            self.searchedMovies = mostPopularMovies
-        }
-    }
+    var page = 1
     
     var movieSearch: String = "" {
         didSet {
             
             if movieSearch.isEmpty {
-                self.searchedMovies = mostPopularMovies
+                self.page = 1
+                self.searchedMovies.removeAll()
+                Task {
+                    await loadMovies(filter: .byMostPopular)
+                }
             }
             else if movieSearch.count > 3 && filter != .byMostPopular {
+                self.searchedMovies.removeAll()
                 Task {
-                    await loadMovies()
+                    await loadMovies(filter: filter)
                 }
             }
         }
     }
     
-    func loadMovies() async {
+    func loadMovies(filter: SearchFilter) async {
         isLoading = true
+        var movies: [Movie] = []
         
         do {
             switch filter {
             case .byTitle:
-                searchedMovies = try await NetworkManager.shared.getMovieBy(filter, term: movieSearch, page: 1)
+                movies = try await NetworkManager.shared.getMovieBy(filter, term: movieSearch, page: page)
             
             case .byMostPopular:
-                mostPopularMovies = try await NetworkManager.shared.getMovieBy(filter, page: 1)
+                movies = try await NetworkManager.shared.getMovieBy(filter, page: page)
             
             case .byReleaseYear:
                 guard let year = Int(movieSearch), year > 1000 else {
@@ -51,8 +52,10 @@ final class MovieListViewModel: ObservableObject {
                     return
                 }
                 
-                searchedMovies = try await NetworkManager.shared.getMovieBy(.byReleaseYear, term: movieSearch, page: 1)
+                movies = try await NetworkManager.shared.getMovieBy(.byReleaseYear, term: movieSearch, page: page)
             }
+            
+            searchedMovies.append(contentsOf: movies)
             
             isLoading = false
             

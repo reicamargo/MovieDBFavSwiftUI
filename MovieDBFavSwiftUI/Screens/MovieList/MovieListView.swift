@@ -27,7 +27,7 @@ struct MovieListView: View {
                             List {
                                 ForEach(movieList.searchedMovies) { movie in
                                     NavigationLink(value: movie.id) {
-                                        MovieListViewCell(movie: movie)
+                                        MovieListCellView(movie: movie)
                                             .listRowSeparator(.visible)
                                             
                                     }
@@ -62,7 +62,7 @@ struct MovieListView: View {
             }
             .task {
                 if movieList.searchedMovies.count == 0 {
-                    await movieList.loadMovies()
+                    await movieList.loadMovies(filter: movieList.filter)
                 }
             }
             .navigationTitle("Movies")

@@ -24,7 +24,7 @@ struct FavoriteMovieListView: View {
                     List {
                         ForEach(favoriteMovieList.filteredFavorites) { favorite in
                             NavigationLink(value: favorite.id) {
-                                MovieListViewCell(movie: favorite)
+                                MovieListCellView(movie: favorite)
                                     .listRowSeparator(.visible)
                             }
                         }
