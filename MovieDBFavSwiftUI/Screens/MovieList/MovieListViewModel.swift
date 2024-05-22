@@ -63,7 +63,7 @@ final class MovieListViewModel: ObservableObject {
             isLoading = false
             
             if let networkError = error as? NetworkError {
-                alertItem.set(title: "Something's went wrong", message: networkError.rawValue)
+                alertItem.set(title: "Something's went wrong", message: networkError.description)
             } else {
                 alertItem.set(title: "Something's went wrong", message: "Unable to connect to the server. Please try again later.")
             }
