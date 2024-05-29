@@ -16,6 +16,15 @@ struct Movie: Codable, Identifiable, Hashable {
     let releaseDate: Date
     var genres: [Genre]?
     
+    var displayedGenres: String {
+        guard let genres else {
+            return "Not provided"
+        }
+        
+        let genresNames = genres.map { $0.name }
+        return genresNames.formatted()
+    }
+    
     func imageURL(posterSize size: PosterSize) -> URL? {
         let baseImageURL = "https://image.tmdb.org/t/p/"
         let imageString = baseImageURL + size.rawValue + (posterPath ?? "")

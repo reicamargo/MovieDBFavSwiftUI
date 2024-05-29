@@ -64,16 +64,7 @@ final class MovieDetailViewModel: ObservableObject {
     
     func displayGenre() -> String {
         guard let movie = self.movie else { return "Not provided" }
-        guard let genres = movie.genres, genres.count > 0 else { return "Not provided" }
         
-        var genresString = ""
-        
-        for genre in genres {
-            genresString += "\(genre.name), "
-        }
-        
-        genresString.removeLast(2)
-        
-        return genresString
+        return movie.displayedGenres
     }
 }
