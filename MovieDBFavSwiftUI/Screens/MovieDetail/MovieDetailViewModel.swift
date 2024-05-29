@@ -61,10 +61,4 @@ final class MovieDetailViewModel: ObservableObject {
             }
         }
     }
-    
-    func displayGenre() -> String {
-        guard let movie = self.movie else { return "Not provided" }
-        
-        return movie.displayedGenres
-    }
 }

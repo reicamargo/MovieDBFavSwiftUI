@@ -24,7 +24,7 @@ struct MovieDetailView: View {
                         .font(.body)
                         .foregroundStyle(.primary)
                         .padding(.bottom, 10)
-                    Text("Genres: \(movieDetail.displayGenre())")
+                    Text("Genres: \(movieDetail.movie?.displayedGenres ?? "")")
                         .font(.body)
                         .foregroundStyle(.primary)
                         .multilineTextAlignment(.leading)
