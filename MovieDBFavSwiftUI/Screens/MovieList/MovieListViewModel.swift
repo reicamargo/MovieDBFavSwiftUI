@@ -36,15 +36,14 @@ final class MovieListViewModel: ObservableObject {
     
     func loadMovies(filter: SearchFilter) async {
         isLoading = true
-        var movies: [Movie] = []
         
         do {
             switch filter {
             case .byTitle:
-                movies = try await NetworkManager.shared.getMovieBy(filter, term: movieSearch, page: page)
+                searchedMovies = try await NetworkManager.shared.getMovieBy(filter, term: movieSearch, page: page)
             
             case .byMostPopular:
-                movies = try await NetworkManager.shared.getMovieBy(filter, page: page)
+                searchedMovies = try await NetworkManager.shared.getMovieBy(filter, page: page)
             
             case .byReleaseYear:
                 guard let year = Int(movieSearch), year > 1000 else {
@@ -52,10 +51,8 @@ final class MovieListViewModel: ObservableObject {
                     return
                 }
                 
-                movies = try await NetworkManager.shared.getMovieBy(.byReleaseYear, term: movieSearch, page: page)
+                searchedMovies = try await NetworkManager.shared.getMovieBy(.byReleaseYear, term: movieSearch, page: page)
             }
-            
-            searchedMovies.append(contentsOf: movies)
             
             isLoading = false
             
