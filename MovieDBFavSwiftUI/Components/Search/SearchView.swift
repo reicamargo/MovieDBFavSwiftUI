@@ -14,6 +14,7 @@ struct SearchView: View {
     var body: some View {
         VStack {
             TextField("Search for movies", text: $textSearch)
+                .textFieldStyle(.plain)
                 .autocorrectionDisabled()
                 .keyboardType(.default)
             
