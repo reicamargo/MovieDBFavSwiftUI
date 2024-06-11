@@ -42,9 +42,9 @@ final class FavoriteMovieListViewModel: ObservableObject {
             isLoading = false
             
             if let persintenceError = error as? PersistenceError {
-                alertItem.set(title: "Something's went wrong", message: persintenceError.rawValue)
+                alertItem.set(title: "Something went wrong", message: persintenceError.rawValue)
             } else {
-                alertItem.set(title: "Something's went wrong", message: "Unable to get favorites. Please try again later.")
+                alertItem.set(title: "Something went wrong", message: "Unable to get favorites. Please try again later.")
             }
         }
     }
@@ -60,9 +60,9 @@ final class FavoriteMovieListViewModel: ObservableObject {
         } catch {
             
             if let persintenceError = error as? PersistenceError {
-                alertItem.set(title: "Something's went wrong", message: persintenceError.rawValue)
+                alertItem.set(title: "Something went wrong", message: persintenceError.rawValue)
             } else {
-                alertItem.set(title: "Something's went wrong", message: "Unable to get favorites. Please try again later.")
+                alertItem.set(title: "Something went wrong", message: "Unable to get favorites. Please try again later.")
             }
         }
     }
